@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-emerald-100 min-h-screen min-w-full;
+  }
+
+  .btnFtrs {
+    @apply rounded-2xl py-2 text-2xl font-semibold   
+        active:scale-90 transition-all active:ring-0;
+  }
+}
+
+@layer utilities {
+  .customScrollbar::-webkit-scrollbar {
+    width: 14px;
+    background-color: rgba(4, 0, 57, 0.4);
+    border-radius: 5em;
+    padding: 10px;
+  }
+  .customScrollbar::-webkit-scrollbar-thumb {
+    /* width: 0.2rem; */
+    background-color: rgb(202, 245, 32);
+    border: 4px solid rgba(0, 0, 0, 0);
+
+    background-clip: padding-box;
+    border-radius: 9999px;
+    padding-left: 10px;
+  }
+  .loader {
+    width: 1.8rem;
+    transform-origin: center;
+    animation: rotate4 2s linear infinite;
+    margin: 0 auto;
+  }
+
+  .loader circle {
+    fill: none;
+    stroke: hsl(0, 0%, 0%);
+    stroke-width: 2;
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: dash4 1.5s ease-in-out infinite;
+  }
+
+  @keyframes rotate4 {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes dash4 {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+
+    50% {
+      stroke-dasharray: 90, 200;
+      stroke-dashoffset: -35px;
+    }
+
+    100% {
+      stroke-dashoffset: -125px;
+    }
+  }
+
+  .mainLoader {
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    position: relative;
+  }
+  
+  .mainLoader:before {
+    content: '';
+    width: 48px;
+    height: 5px;
+    background: #f0808050;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    border-radius: 50%;
+    animation: shadow324 0.5s linear infinite;
+  }
+  
+  .mainLoader:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: #f08080;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+    animation: jump7456 0.5s linear infinite;
+  }
+  
+  @keyframes jump7456 {
+    15% {
+      border-bottom-right-radius: 3px;
+    }
+  
+    25% {
+      transform: translateY(9px) rotate(22.5deg);
+    }
+  
+    50% {
+      transform: translateY(18px) scale(1, .9) rotate(45deg);
+      border-bottom-right-radius: 40px;
+    }
+  
+    75% {
+      transform: translateY(9px) rotate(67.5deg);
+    }
+  
+    100% {
+      transform: translateY(0) rotate(90deg);
+    }
+  }
+  
+  @keyframes shadow324 {
+  
+    0%,
+      100% {
+      transform: scale(1, 1);
+    }
+  
+    50% {
+      transform: scale(1.2, 1);
+    }
+  }
+}
