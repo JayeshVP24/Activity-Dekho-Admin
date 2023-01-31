@@ -8,7 +8,7 @@ const serviceAccount = require('../firebase-admin.json');
 if(!admin.apps.length && serviceAccount) {
     
     initializeApp({
-        credential: cert(serviceAccount)
+        credential: cert(serviceAccount),
     });
     
 }
