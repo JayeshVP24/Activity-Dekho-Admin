@@ -11,13 +11,13 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config,options) => {
-    if(!options.dev) config.module.rules.push({
-      test:/\.json$/,
-      loader: 'json-loader'
-    })
-    return config
-  }
+  // webpack: (config,options) => {
+  //   if(!options.dev) config.module.rules.push({
+  //     test:/\.json$/,
+  //     loader: 'json-loader'
+  //   })
+  //   return config
+  // }
 
 }
 
