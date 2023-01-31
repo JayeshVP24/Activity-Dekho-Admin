@@ -213,6 +213,7 @@ const Home: NextPage<{
       >
         <DeleteConfirmation />
       </ModalWrapper>
+      
     </main>
   );
 };
