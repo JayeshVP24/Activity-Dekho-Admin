@@ -1,0 +1,69 @@
+name: activity-dekho-next-app-staging
+
+on:
+  push:
+    branches:
+      - staging
+
+env:
+  PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME}}
+  REGION: asia-south1
+  REPO_NAME: activity-dekho-admin-staging
+  # FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY}}
+  # FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID}}
+  # FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID}}
+jobs:
+  build-and-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # - name: show secret
+      #   run: 'echo "API KEY $FIREBASE_API_KEY" > key '
+
+      # create env encodde
+      - name: Creating Env file
+        run: |
+          echo "${{ secrets.ENV_LOCAL }}" > .env.local
+     
+      # create firebase-admin.json file
+      - name: Creating firebase admin file
+        run: |
+          echo "${{ secrets.FIREBASE_ADMIN }}" > firebase-admin.json
+      
+      # authenticate with google cloud
+      - id: "auth"
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: "${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}"
+      
+      # setup gcloud CLI/SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      # giving docker permission ot push
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+
+
+      # build docker image
+      - name: Build and tag the docker image
+        run: |-
+          docker buildx build . --tag gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA \
+           --secret id=_env_local,src=.env.local \
+           --secret id=firebase_admin_json,src=firebase-admin.json
+
+      # pushing image to google container registry
+      - name: Push the image to the Google Container Registry (GCR)
+        run: |-
+          docker push gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA
+
+      - name: Deploy
+        run: |-
+          gcloud run deploy $REPO_NAME \
+          --region $REGION \
+          --image gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA \
+          --platform "managed" \
+          --quiet \
+          
