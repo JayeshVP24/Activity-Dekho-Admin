@@ -30,8 +30,7 @@ jobs:
       # create firebase-admin.json file
       - name: Creating firebase admin file
         run: |
-          echo "${{ secrets.FIREBASE_ADMIN }}" | base64 --decode > firebase-admin.json
-
+          echo "${{ secrets.FIREBASE_ADMIN }}" > firebase-admin.json
       
       # authenticate with google cloud
       - id: "auth"
