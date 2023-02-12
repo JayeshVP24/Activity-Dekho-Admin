@@ -10,6 +10,7 @@ import { AnimatePresence } from "framer-motion";
 import { createContext, useEffect, useState } from "react";
 import AlertMsg from "./AlertMsg";
 import Authenticate from "./Authenticate";
+import Footer from "./Footer";
 import Header from "./Header";
 
 export const GlobalStateContext = createContext<{
@@ -241,6 +242,7 @@ const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
         </>
       )}
       {state.matches("loggedIn") && <>{children}</>}
+      <Footer />
       <AnimatePresence>
         {alertState.matches("visible") && (
           <AlertMsg
